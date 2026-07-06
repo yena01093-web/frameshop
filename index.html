@@ -60,6 +60,14 @@
   /* ── Portfolio ───────────────────────────────────── */
   #work { background: #131316; border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); }
   .work-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 56px; }
+  .work-card.wide { grid-column: 1 / -1; }
+  .work-card.wide .work-desc { min-height: 0; }
+  .work-sublinks { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+  .work-sublink {
+    font-size: 12.5px; font-weight: 700; color: #C8C6D0; border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 20px; padding: 7px 14px; transition: all 0.15s;
+  }
+  .work-sublink:hover { border-color: var(--wc-accent, #7C5CFF); color: var(--wc-accent, #7C5CFF); }
   .work-card {
     position: relative; background: #0D0D10; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
     padding: 28px; overflow: hidden; transition: border-color 0.25s;
@@ -124,8 +132,8 @@
       <a href="#contact" class="btn btn-ghost">문의하기</a>
     </div>
     <div class="hero-stats">
-      <div><b>6</b><span>구축한 사이트</span></div>
-      <div><b>4</b><span>서로 다른 업종</span></div>
+      <div><b>9+</b><span>구축한 사이트·시스템</span></div>
+      <div><b>6</b><span>서로 다른 업종</span></div>
       <div><b>100%</b><span>실사용 중인 사이트</span></div>
     </div>
   </div>
@@ -148,14 +156,19 @@
         <a href="https://euro-health-spa.vercel.app" target="_blank" rel="noopener" class="work-link">사이트 보기 →</a>
       </div>
 
-      <div class="work-card reveal" style="--wc-accent:#C8A45A">
+      <div class="work-card wide reveal" style="--wc-accent:#C8A45A">
         <div class="work-corner tl"></div><div class="work-corner tr"></div><div class="work-corner bl"></div><div class="work-corner br"></div>
         <div class="work-swatch"></div>
-        <div class="work-industry">Hotel</div>
-        <div class="work-name">JC Hotel</div>
-        <div class="work-desc">객실 TV 룸서비스 주문(4개국어)과 프론트데스크·투숙객 관리를 한 번에 처리하는 호텔 운영 시스템입니다.</div>
-        <div class="work-tags"><span class="work-tag">다국어</span><span class="work-tag">TV UI</span><span class="work-tag">운영 백오피스</span></div>
-        <a href="https://ubpos-tv.vercel.app/tv.html" target="_blank" rel="noopener" class="work-link">사이트 보기 →</a>
+        <div class="work-industry">POS Platform</div>
+        <div class="work-name">UBPOS</div>
+        <div class="work-desc">직접 만든 자체 POS 플랫폼입니다. 하나의 시스템을 호텔·음식점·스터디카페 등 서로 다른 업종에 맞게 적용하고 있습니다.</div>
+        <div class="work-tags"><span class="work-tag">자체 플랫폼</span><span class="work-tag">멀티 버티컬</span><span class="work-tag">다국어</span></div>
+        <a href="https://yena01093-web.github.io/scanners/ubpos.html" target="_blank" rel="noopener" class="work-link">플랫폼 소개 보기 →</a>
+        <div class="work-sublinks">
+          <a href="https://ubpos-tv.vercel.app/tv.html" target="_blank" rel="noopener" class="work-sublink">🏨 호텔 적용 — JC Hotel</a>
+          <a href="https://ubpos-food.vercel.app/order/supercrispy-jc/4c9eb3c6-70c6-46f7-9147-c584712d5d6e" target="_blank" rel="noopener" class="work-sublink">🍗 음식점 적용 — QR 주문</a>
+          <a href="https://ubpos-studycafe.vercel.app/studycafe-dashboard.html" target="_blank" rel="noopener" class="work-sublink">📚 스터디카페 적용 — 대시보드</a>
+        </div>
       </div>
 
       <div class="work-card reveal" style="--wc-accent:#155EEF">
