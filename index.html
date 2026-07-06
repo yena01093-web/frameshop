@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>프레임샵 | 작지만 진짜로 쓰이는 웹을 만듭니다</title>
+<meta name="description" content="프레임샵 포트폴리오 — 헬스클럽, 호텔, 인쇄소, 행정사무소 등 실제 운영 중인 웹사이트와 시스템을 만듭니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #0D0D10; color: #F2F1EC;
+    font-family: 'Pretendard', -apple-system, 'Malgun Gothic', sans-serif;
+    line-height: 1.6; overflow-x: hidden;
+    touch-action: manipulation;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ── Nav ─────────────────────────────────────────── */
+  #nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 32px; transition: all 0.3s ease; background: rgba(13,13,16,0);
+  }
+  #nav.scrolled { background: rgba(13,13,16,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.08); padding: 15px 32px; }
+  .logo { font-size: 18px; font-weight: 900; letter-spacing: -0.01em; }
+  .logo b { color: #7C5CFF; }
+  .nav-cta { padding: 10px 20px; border: 1px solid rgba(255,255,255,0.18); border-radius: 6px; font-size: 13px; font-weight: 700; }
+  .nav-cta:hover { background: #7C5CFF; border-color: #7C5CFF; }
+
+  /* ── Hero ────────────────────────────────────────── */
+  #hero { min-height: 100vh; min-height: 100dvh; display: flex; align-items: center; padding: 120px 0 80px; position: relative; }
+  .hero-frame { position: absolute; top: 90px; left: 32px; right: 32px; bottom: 60px; border: 1px solid rgba(255,255,255,0.06); pointer-events: none; }
+  .hero-eyebrow { font-size: 13px; letter-spacing: 0.3em; text-transform: uppercase; color: #7C5CFF; font-weight: 700; margin-bottom: 24px; }
+  .hero-title { font-size: clamp(36px, 6.2vw, 74px); font-weight: 900; letter-spacing: -0.03em; line-height: 1.12; text-wrap: balance; }
+  .hero-title em { font-style: normal; color: #7C5CFF; }
+  .hero-desc { font-size: 17px; color: #A8A6AD; max-width: 540px; margin-top: 28px; line-height: 1.85; }
+  .hero-actions { display: flex; gap: 14px; margin-top: 40px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 15px 28px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; border: none; font-family: inherit; }
+  .btn-primary { background: #7C5CFF; color: #0D0D10; }
+  .btn-primary:hover { background: #9575FF; transform: translateY(-1px); box-shadow: 0 10px 28px rgba(124,92,255,0.3); }
+  .btn-ghost { background: transparent; border: 1.5px solid rgba(255,255,255,0.16); color: #F2F1EC; }
+  .btn-ghost:hover { border-color: #F2F1EC; }
+  .hero-stats { display: flex; gap: 44px; margin-top: 68px; flex-wrap: wrap; }
+  .hero-stats b { display: block; font-size: 30px; font-weight: 900; color: #F2F1EC; }
+  .hero-stats span { font-size: 12px; color: #6E6C76; letter-spacing: 0.03em; }
+
+  /* ── Section shared ──────────────────────────────── */
+  section { padding: 110px 0; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase; color: #7C5CFF; font-weight: 700; margin-bottom: 14px; }
+  .section-title { font-size: clamp(28px, 3.8vw, 42px); font-weight: 900; letter-spacing: -0.02em; }
+  .section-sub { font-size: 15.5px; color: #8B8A93; margin-top: 14px; max-width: 560px; line-height: 1.8; }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── Portfolio ───────────────────────────────────── */
+  #work { background: #131316; border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .work-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 56px; }
+  .work-card {
+    position: relative; background: #0D0D10; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
+    padding: 28px; overflow: hidden; transition: border-color 0.25s;
+  }
+  .work-card:hover { border-color: var(--wc-accent, #7C5CFF); }
+  .work-card:hover .work-corner { opacity: 1; }
+  .work-corner { position: absolute; width: 16px; height: 16px; opacity: 0; transition: opacity 0.25s; pointer-events: none; }
+  .work-corner::before, .work-corner::after { content: ''; position: absolute; background: var(--wc-accent, #7C5CFF); }
+  .work-corner::before { width: 100%; height: 2px; top: 0; left: 0; }
+  .work-corner::after { width: 2px; height: 100%; top: 0; left: 0; }
+  .work-corner.tl { top: 10px; left: 10px; }
+  .work-corner.tr { top: 10px; right: 10px; transform: scaleX(-1); }
+  .work-corner.bl { bottom: 10px; left: 10px; transform: scaleY(-1); }
+  .work-corner.br { bottom: 10px; right: 10px; transform: scale(-1); }
+  .work-swatch { width: 40px; height: 40px; border-radius: 10px; background: var(--wc-accent, #7C5CFF); margin-bottom: 20px; }
+  .work-industry { font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--wc-accent, #7C5CFF); margin-bottom: 8px; }
+  .work-name { font-size: 20px; font-weight: 800; }
+  .work-desc { font-size: 13.5px; color: #8B8A93; margin-top: 10px; line-height: 1.7; min-height: 58px; }
+  .work-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
+  .work-tag { font-size: 11px; color: #A8A6AD; border: 1px solid rgba(255,255,255,0.12); border-radius: 20px; padding: 4px 10px; }
+  .work-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: #F2F1EC; margin-top: 20px; }
+  .work-link:hover { color: var(--wc-accent, #7C5CFF); }
+  @media (max-width: 760px) { .work-grid { grid-template-columns: 1fr; } }
+
+  /* ── Approach ────────────────────────────────────── */
+  .approach-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 56px; }
+  .approach-num { font-size: 13px; font-weight: 900; color: #7C5CFF; margin-bottom: 14px; }
+  .approach-title { font-size: 17px; font-weight: 800; margin-bottom: 10px; }
+  .approach-desc { font-size: 13.5px; color: #8B8A93; line-height: 1.75; }
+  @media (max-width: 760px) { .approach-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+  /* ── Contact ─────────────────────────────────────── */
+  #contact { background: #131316; border-top: 1px solid rgba(255,255,255,0.06); }
+  .contact-box { text-align: center; margin-top: 40px; }
+  .contact-email { display: inline-block; font-size: 24px; font-weight: 800; color: #7C5CFF; margin-top: 20px; }
+  .contact-email:hover { color: #9575FF; }
+
+  footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.06); text-align: center; }
+  .footer-copy { font-size: 12.5px; color: #6E6C76; }
+
+  @media (max-width: 560px) {
+    .wrap { padding: 0 20px; }
+    .hero-stats { gap: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#hero" class="logo">FRAME<b>SHOP</b></a>
+  <a href="#contact" class="nav-cta">문의하기</a>
+</nav>
+
+<section id="hero">
+  <div class="hero-frame"></div>
+  <div class="wrap">
+    <div class="hero-eyebrow">Web Studio · 프레임샵</div>
+    <h1 class="hero-title">작지만 진짜로<br><em>쓰이는</em> 웹을 만듭니다</h1>
+    <p class="hero-desc">헬스클럽, 호텔, 인쇄소, 행정사무소까지 — 실제로 운영되는 업종별 웹사이트와 그 안에서 돌아가는 관리 시스템을 직접 설계하고 만듭니다.</p>
+    <div class="hero-actions">
+      <a href="#work" class="btn btn-primary">작업물 보기 →</a>
+      <a href="#contact" class="btn btn-ghost">문의하기</a>
+    </div>
+    <div class="hero-stats">
+      <div><b>6</b><span>구축한 사이트</span></div>
+      <div><b>4</b><span>서로 다른 업종</span></div>
+      <div><b>100%</b><span>실사용 중인 사이트</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="eyebrow reveal">Selected Work</div>
+    <h2 class="section-title reveal">작업물</h2>
+    <p class="section-sub reveal">업종마다 다른 문제를 풀었습니다. 각 사이트를 직접 눌러서 확인해보세요.</p>
+
+    <div class="work-grid">
+      <div class="work-card reveal" style="--wc-accent:#C8A45A">
+        <div class="work-corner tl"></div><div class="work-corner tr"></div><div class="work-corner bl"></div><div class="work-corner br"></div>
+        <div class="work-swatch"></div>
+        <div class="work-industry">Fitness · Spa</div>
+        <div class="work-name">유로헬스클럽</div>
+        <div class="work-desc">안면인식 회원관리 시스템과 연동된 헬스·스파 마케팅 사이트. 문의폼이 실시간으로 회원관리 시스템에 도착합니다.</div>
+        <div class="work-tags"><span class="work-tag">Firebase</span><span class="work-tag">얼굴인식</span><span class="work-tag">실시간 연동</span></div>
+        <a href="https://euro-health-spa.vercel.app" target="_blank" rel="noopener" class="work-link">사이트 보기 →</a>
+      </div>
+
+      <div class="work-card reveal" style="--wc-accent:#C8A45A">
+        <div class="work-corner tl"></div><div class="work-corner tr"></div><div class="work-corner bl"></div><div class="work-corner br"></div>
+        <div class="work-swatch"></div>
+        <div class="work-industry">Hotel</div>
+        <div class="work-name">JC Hotel</div>
+        <div class="work-desc">객실 TV 룸서비스 주문(4개국어)과 프론트데스크·투숙객 관리를 한 번에 처리하는 호텔 운영 시스템입니다.</div>
+        <div class="work-tags"><span class="work-tag">다국어</span><span class="work-tag">TV UI</span><span class="work-tag">운영 백오피스</span></div>
+        <a href="https://ubpos-tv.vercel.app/tv.html" target="_blank" rel="noopener" class="work-link">사이트 보기 →</a>
+      </div>
+
+      <div class="work-card reveal" style="--wc-accent:#155EEF">
+        <div class="work-corner tl"></div><div class="work-corner tr"></div><div class="work-corner bl"></div><div class="work-corner br"></div>
+        <div class="work-swatch"></div>
+        <div class="work-industry">Print Shop</div>
+        <div class="work-name">현대인쇄소</div>
+        <div class="work-desc">자체 맞춤법 검사기, 원고 대조(OCR 지원), 명함 디자인 실시간 미리보기까지 — 인쇄 전 실수를 줄이는 도구를 갖춘 사이트입니다.</div>
+        <div class="work-tags"><span class="work-tag">OCR</span><span class="work-tag">자체 맞춤법 검사</span><span class="work-tag">실시간 미리보기</span></div>
+        <a href="https://hyundai-print.vercel.app" target="_blank" rel="noopener" class="work-link">사이트 보기 →</a>
+      </div>
+
+      <div class="work-card reveal" style="--wc-accent:#3B7A50">
+        <div class="work-corner tl"></div><div class="work-corner tr"></div><div class="work-corner bl"></div><div class="work-corner br"></div>
+        <div class="work-swatch"></div>
+        <div class="work-industry">Legal Agency</div>
+        <div class="work-name">WBC행정사사무소</div>
+        <div class="work-desc">산림·산지 전문 행정사를 위한 영업용 사이트. 전문성과 신뢰를 우선하는 차분한 톤으로 구성했습니다.</div>
+        <div class="work-tags"><span class="work-tag">영업용 샘플</span><span class="work-tag">신뢰 중심 디자인</span></div>
+        <a href="https://wbc-forest-agency.vercel.app" target="_blank" rel="noopener" class="work-link">사이트 보기 →</a>
+      </div>
+
+      <div class="work-card reveal" style="--wc-accent:#E0A9B4">
+        <div class="work-corner tl"></div><div class="work-corner tr"></div><div class="work-corner bl"></div><div class="work-corner br"></div>
+        <div class="work-swatch"></div>
+        <div class="work-industry">Photography</div>
+        <div class="work-name">루멘 스튜디오</div>
+        <div class="work-desc">웨딩·인물 사진 스튜디오를 위한 감성적인 포트폴리오형 샘플 사이트입니다.</div>
+        <div class="work-tags"><span class="work-tag">포트폴리오형</span><span class="work-tag">샘플 사이트</span></div>
+        <a href="https://lumen-studio.vercel.app" target="_blank" rel="noopener" class="work-link">사이트 보기 →</a>
+      </div>
+
+      <div class="work-card reveal" style="--wc-accent:#FF5C35">
+        <div class="work-corner tl"></div><div class="work-corner tr"></div><div class="work-corner bl"></div><div class="work-corner br"></div>
+        <div class="work-swatch"></div>
+        <div class="work-industry">Video Production</div>
+        <div class="work-name">BD프로덕션</div>
+        <div class="work-desc">영상 제작 프로덕션을 위한 브랜드 소개 사이트. 다크 톤과 강렬한 포인트 컬러로 임팩트를 살렸습니다.</div>
+        <div class="work-tags"><span class="work-tag">브랜드 사이트</span><span class="work-tag">다크 테마</span></div>
+        <a href="https://db-production.vercel.app" target="_blank" rel="noopener" class="work-link">사이트 보기 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="approach">
+  <div class="wrap">
+    <div class="eyebrow reveal">How We Work</div>
+    <h2 class="section-title reveal">일하는 방식</h2>
+    <div class="approach-grid">
+      <div class="reveal">
+        <div class="approach-num">01</div>
+        <div class="approach-title">업종마다 다르게 설계</div>
+        <div class="approach-desc">모든 사이트에 같은 틀을 씌우지 않습니다. 업종의 실제 문제(회원관리, 룸서비스, 교정, 영업 신뢰)에서 출발합니다.</div>
+      </div>
+      <div class="reveal">
+        <div class="approach-num">02</div>
+        <div class="approach-title">데모가 아니라 실사용</div>
+        <div class="approach-desc">위 사이트들은 목업이 아니라 실제 서버에 배포되어 지금도 접속 가능한, 실제로 쓰이는 상태입니다.</div>
+      </div>
+      <div class="reveal">
+        <div class="approach-num">03</div>
+        <div class="approach-title">만든 뒤에도 계속 케어</div>
+        <div class="approach-desc">배포로 끝나지 않습니다. 사진 교체, 기능 조정, 버그 수정까지 운영 중 필요한 부분을 계속 함께 관리합니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap contact-box">
+    <div class="eyebrow reveal">Get in Touch</div>
+    <h2 class="section-title reveal">웹사이트가 필요하신가요?</h2>
+    <p class="section-sub reveal" style="margin-left:auto;margin-right:auto">업종·규모 상관없이 편하게 문의해주세요.</p>
+    <a href="mailto:yena01093@gmail.com" class="contact-email reveal">yena01093@gmail.com</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-copy">© 2026 프레임샵(FRAMESHOP). All rights reserved.</div>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 20);
+});
+const revealEls = document.querySelectorAll('.reveal');
+const ro = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+revealEls.forEach(el => ro.observe(el));
+</script>
+</body>
+</html>
